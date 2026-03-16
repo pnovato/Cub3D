@@ -2,11 +2,13 @@ NAME = cub3d
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRC_DIR = src
+SRC_INIT_DIR = src/init
 INCLUDE_DIR = includes
 LIBFT_DIR = libft
 MLX_DIR = minilibx-linux
 
-SRC = 	$(SRC_DIR)/main.c \ 
+SRC = 	$(SRC_DIR)/main.c \
+	$(SRC_INIT_DIR)/init_mlx.c
 
 OBJ = $(SRC:.c=.o)
 
