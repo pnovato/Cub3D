@@ -11,6 +11,7 @@ void	close_window(t_cub *vars)
 
 int	handle_key(int keycode, t_cub *vars)
 {
+	printf("%d\n", keycode);
 	if (keycode == 65307)
 		close_window(vars);
 	return (0);
@@ -21,6 +22,14 @@ int	handle_close(t_cub *vars)
 	close_window(vars);
 	return (0);
 }
+/*
+int	key_press(int keycode, t_cub *vars)
+{
+	else if (keycode == 65307)
+		close_window(vars);
+	return (0);
+}*/
+
 
 void	init_window(t_cub *vars)
 {
@@ -30,4 +39,6 @@ void	init_window(t_cub *vars)
 	vars->win_ptr = mlx_new_window(vars->mlx_ptr, WIDTH, HEIGHT, "Cub3D");
 	if (!vars->win_ptr)
 		exit(1);
+	mlx_hook(vars->win_ptr, 17, 0, handle_close, vars);
+	mlx_hook(vars->win_ptr, 2, 1L << 0, handle_key, vars);
 }

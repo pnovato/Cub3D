@@ -22,6 +22,6 @@ void	init_window(t_cub *vars);
 void	close_window(t_cub *vars);
 int	handle_close(t_cub *vars);
 int	handle_key(int keycode, t_cub *vars);
-
+//int     key_press(int keycode, t_cub *vars);
 
 #endif
