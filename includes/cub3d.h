@@ -10,21 +10,58 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 
+//---------------------------------------------------------
+//Texture according to coordinates
+//---------------------------------------------------------
 typedef enum e_dir
 {
-    N,
-    S,
-    W,
-    E
+	NO,
+	SO,
+	WE,
+	EA,
+	F,
+	C
 }   t_dir;
-
+//---------------------------------------------------------
+//Struct base for vector calculations
+//---------------------------------------------------------
+typedef struct s_vector
+{
+	double	x;
+	double	y;
+}	t_vector;
+//---------------------------------------------------------
+//Struct for window initialization and events
+//---------------------------------------------------------
 typedef struct s_cub
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img_ptr;
 }	t_cub;
-
+//---------------------------------------------------------
+//Struct for the map (pointer to matrix, number of lines n columns)
+//---------------------------------------------------------
+typedef struct s_map
+{
+	char	**map;
+	int	n_lines;
+	int	n_column;
+}	t_map;
+//---------------------------------------------------------
+//Struct for the player (Working with vectors)
+//---------------------------------------------------------
+typedef struct s_player
+{
+	struct s_vector	pos;
+	struct s_vector	dir;
+	struct s_vector	plane;
+}	t_player;
+//---------------------------------------------------------
+//Struct for the textures (All related to the function 
+//char *mlx_get_data_addr which is going to work with the
+//raw data of the image
+//---------------------------------------------------------
 typedef struct s_texture
 {
 	char		*addr_img;
