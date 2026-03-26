@@ -89,7 +89,18 @@ typedef struct s_texture
 	int		t_height;
 	int		t_width;
 }	t_texture;
-	
+//--------------------------------------------------------
+//The only struct that's going to be called during the project
+//cause it has an instance of all others inside it. 
+//--------------------------------------------------------
+typedef struct s_data
+{
+	t_cub		init;
+	t_map		map;
+	t_player	player;
+	t_ray		ray;
+	t_texture	text[4];
+}	t_data;
 
 // init_mlx.c
 void	init_window(t_cub *vars);
