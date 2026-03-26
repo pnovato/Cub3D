@@ -58,6 +58,23 @@ typedef struct s_player
 	struct s_vector	plane;
 }	t_player;
 //---------------------------------------------------------
+//Struct for the data required for every ray loop
+//---------------------------------------------------------
+typedef struct s_ray
+{
+	t_vector dir_ray;
+	int	map_x;
+	int	map_y;
+	int	side_hit;
+	int	step_x;
+	int	step_y;
+	double	delt_x;
+	double	delt_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	perp_wall_dist;
+}	t_ray;
+//---------------------------------------------------------
 //Struct for the textures (All related to the function 
 //char *mlx_get_data_addr which is going to work with the
 //raw data of the image
