@@ -19,9 +19,7 @@ typedef enum e_dir
 	NO,
 	SO,
 	WE,
-	EA,
-	F,
-	C
+	EA
 }   t_dir;
 //---------------------------------------------------------
 //Struct base for vector calculations
@@ -116,6 +114,8 @@ typedef struct s_data
 	t_ray		ray;
 	t_texture	text[4];
 	t_keys		keys;
+	int			floor_color;
+	int			ceiling_color;
 }	t_data;
 
 // init_mlx.c
