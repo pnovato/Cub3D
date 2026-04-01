@@ -4,7 +4,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <math.h>
-# include <mlx.h>
+# include <fcntl.h>
+# include "mlx.h"
 # include "../libft/libft.h"
 
 # define WIDTH 1920
@@ -35,10 +36,14 @@ typedef struct s_vector
 //---------------------------------------------------------
 typedef struct s_cub
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-	void	*img_ptr;
-}	t_cub;
+    void    *mlx_ptr;
+    void    *win_ptr;
+    void    *img_ptr;
+    char    *addr;         
+    int     bits_p_pixel;  
+    int     size_line;     
+    int     endian;        
+}   t_cub;
 //---------------------------------------------------------
 //Struct for the map (pointer to matrix, number of lines n columns)
 //---------------------------------------------------------
@@ -89,6 +94,16 @@ typedef struct s_texture
 	int		t_height;
 	int		t_width;
 }	t_texture;
+
+typedef struct s_keys
+{
+	int	w;
+	int	a;
+	int	s;
+	int	d;
+	int	left;
+	int	right;
+}	t_keys;
 //--------------------------------------------------------
 //The only struct that's going to be called during the project
 //cause it has an instance of all others inside it. 
@@ -100,13 +115,20 @@ typedef struct s_data
 	t_player	player;
 	t_ray		ray;
 	t_texture	text[4];
+	t_keys		keys;
 }	t_data;
 
 // init_mlx.c
-void	init_window(t_cub *vars);
-void	close_window(t_cub *vars);
-int	handle_close(t_cub *vars);
-int	handle_key(int keycode, t_cub *vars);
+void	init_window(t_data *data);
+void	close_window(t_data *data);
+int	handle_close(t_data *data);
+int	handle_key(int keycode, t_data *vars);
+int     parse_map(char *file, t_data *data);
+int     render_frame(t_data *data);
 //int     key_press(int keycode, t_cub *vars);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	draw_vertical_line(t_data *data, int x, int draw_start, int draw_end);
+void	rotate_player(t_data *data, double angle);
+char	*get_next_line(int fd);
 
 #endif

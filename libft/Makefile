@@ -64,7 +64,8 @@ ft_printf/ft_myputstr.c \
 ft_printf/ft_myputchar.c \
 ft_printf/ft_myputhex.c \
 ft_printf/ft_printf.c \
-ft_strcmp.c
+ft_strcmp.c \
+get_next_line.c 
 
 BONUS = ft_lstnew_bonus.c \
 ft_lstadd_front_bonus.c \

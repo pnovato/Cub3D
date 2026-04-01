@@ -13,6 +13,8 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+#include "get_next_line.h"
+
 # include <stdio.h>
 # include <unistd.h>
 # include <string.h>

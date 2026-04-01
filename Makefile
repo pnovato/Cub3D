@@ -3,13 +3,18 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRC_DIR = src
 SRC_INIT_DIR = src/init
+SRC_PARSING_DIR = src/parsing
+SRC_RENDER_DIR = src/render
 INCLUDE_DIR = includes
 OBJ_DIR = objs
 LIBFT_DIR = libft
 MLX_DIR = minilibx-linux
 
-SRC = 	$(SRC_DIR)/main.c \
-	$(SRC_INIT_DIR)/init_mlx.c
+SRC = $(SRC_DIR)/main.c \
+      $(SRC_INIT_DIR)/init_mlx.c \
+      $(SRC_PARSING_DIR)/parser.c \
+      $(SRC_RENDER_DIR)/render.c \
+      $(SRC_RENDER_DIR)/draw.c
 
 OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
 
