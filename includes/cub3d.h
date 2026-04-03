@@ -130,5 +130,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	draw_vertical_line(t_data *data, int x, int draw_start, int draw_end);
 void	rotate_player(t_data *data, double angle);
 char	*get_next_line(int fd);
+void    free_data(t_data *data);
+
 
 #endif
