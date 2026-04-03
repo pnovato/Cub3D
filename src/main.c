@@ -1,5 +1,22 @@
 #include "../includes/cub3d.h"
 
+void    free_data(t_data *data)
+{
+    int i;
+
+    // Liberta o mapa
+    if (data->map.map)
+    {
+        i = 0;
+        while (data->map.map[i])
+            free(data->map.map[i++]);
+        free(data->map.map);
+    }
+    // Destrói a imagem MLX
+    if (data->init.img_ptr)
+        mlx_destroy_image(data->init.mlx_ptr, data->init.img_ptr);
+}
+
 int	main(int ac, char **av)
 {
 	t_data	data;
