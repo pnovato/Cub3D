@@ -63,6 +63,7 @@ typedef struct s_player
 	struct s_vector	pos;
 	struct s_vector	dir;
 	struct s_vector	plane;
+	char		spawn_dir;
 }	t_player;
 //---------------------------------------------------------
 //Struct for the data required for every ray loop
@@ -137,5 +138,9 @@ char	*get_next_line(int fd);
 void    free_data(t_data *data);
 
 int	parse_element(char *line, t_data *data);
+int     validate_map(t_data *data);
+
+void    init_player_dir(t_data *data);
+void	free_data(t_data *data);
 
 #endif

@@ -3,13 +3,6 @@
 void	close_window(t_data *data)
 {
 	free_data(data);
-	if (data->init.win_ptr)
-		mlx_destroy_window(data->init.mlx_ptr, data->init.win_ptr);
-	if (data->init.mlx_ptr)
-	{
-		mlx_destroy_display(data->init.mlx_ptr);
-		free(data->init.mlx_ptr);
-	}
 	exit(0);
 }
 
