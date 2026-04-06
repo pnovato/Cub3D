@@ -94,5 +94,4 @@ int	parse_element(char *line, t_data *data)
 	}
 	free(trimmed);
 	return (2); //return for invalid input, A element not non
-	}
 }

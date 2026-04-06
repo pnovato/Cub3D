@@ -10,10 +10,10 @@ static int	check_elements(t_data *data)
 		return (printf("Error\nMissing WE texture\n"), 1);
 	if (!data->map.path_ea)
 		return (printf("Error\nMissing EA texture\n"), 1);
-	if (!data->map.floor_color && data->map.floor_color != 0)
+	if (!data->floor_color && data->floor_color != 0)
 		return (printf("Error\nMissing F color\n"), 1);
-	if (!data->map.ceiling_color && data->map.ceiling_color != 0)
-		return (printf("Error\nMissing C collor\n", 1);
+	if (!data->ceiling_color && data->ceiling_color != 0)
+		return (printf("Error\nMissing C collor\n"), 1);
 	return (0);
 }
 

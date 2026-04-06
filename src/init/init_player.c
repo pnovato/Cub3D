@@ -9,12 +9,12 @@ void	init_player_dir(t_data *data)
 		data->player.plane.x = 0.66;
 		data->player.plane.y = 0.0;
 	}
-	else if (data->player.spwan_dir == 'S')
+	else if (data->player.spawn_dir == 'S')
 	{
-		data->player.dir.x == 0.0;
-		data->player.dir.y == 1.0;
+		data->player.dir.x = 0.0;
+		data->player.dir.y = 1.0;
 		data->player.plane.x = -0.66;
-		data->player.plane.y == 0.0;
+		data->player.plane.y = 0.0;
 	}
 	else if (data->player.spawn_dir == 'W')
 	{
@@ -26,6 +26,8 @@ void	init_player_dir(t_data *data)
 	else if (data->player.spawn_dir == 'E')
 	{
 		data->player.dir.x = 1.0;
-		data->player
+		data->player.dir.y = 0.0;
+		data->player.plane.x = 0.0;
+		data->player.plane.y = 0.66;
 	}
 }

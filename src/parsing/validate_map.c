@@ -17,7 +17,7 @@ static int	check_char(t_data *data)
 		j = 0;
 		while (data->map.map[i][j])
 		{
-			if (!is_valid_char(data->map.map[i][j])
+			if (!is_valid_char(data->map.map[i][j]))
 				return (printf("Error\nInvalid map char '%c'\n",
 					data->map.map[i][j]), 1);
 			j++;
@@ -69,20 +69,20 @@ static int	check_cell(t_data *data, int i, int j)
 	if (i == 0)
 		return (printf("Error\nMap is not closed\n"), 1);
 	if (!data->map.map[i + 1])
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	if (j == 0)
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	max_j = ft_strlen(data->map.map[i]);
 	if (j >= max_j - 1)
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	if (data->map.map[i - 1][j] == ' ' || data->map.map[i - 1][j] == '\0')
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	if (data->map.map[i + 1][j] == ' ' || data->map.map[i + 1][j] == '\0')
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	if (data->map.map[i][j - 1] == ' ')
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	if (data->map.map[i][j + 1] == ' ' || data->map.map[i][j + 1] == '\0')
-		return (printf("Error\nMap is not closed\n", 1);
+		return (printf("Error\nMap is not closed\n"), 1);
 	return (0);
 }
 
@@ -97,7 +97,7 @@ static int 	check_closed(t_data *data)
 		j = 0;
 		while (data->map.map[i][j])
 		{
-			if (check_cell(data, i, j)
+			if (check_cell(data, i, j))
 				return (1);
 			j++;
 		}
