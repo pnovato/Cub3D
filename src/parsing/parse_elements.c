@@ -9,13 +9,15 @@ static char	*ft_strtrim_nl(char *str)
 	while (str[start] == ' ' || str[start] == '\t')
 		start++;
 	end = ft_strlen(str) - 1;
-	while (end > start && (str[end] == '\n' || str[end] == ' '
+	while (end >= start && (str[end] == '\n' || str[end] == ' '
 		|| str[end] == '\t'))
 		end--;
+	if (end < start)
+		return (ft_strdup(""));
 	return (ft_substr(str, start, end - start + 1));
 }
 
-static char	parse_rgb(char *str)
+static int	parse_rgb(char *str)
 {
 	char	**split;
 	int	i;
@@ -24,7 +26,7 @@ static char	parse_rgb(char *str)
 	int	b;
 
 	split = ft_split(str, ',');
-	if (!split || !split[0] || !split[1] || !split[2] || !split[3])
+	if (!split || !split[0] || !split[1] || !split[2] || split[3])
 	{
 		if (split)
 		{

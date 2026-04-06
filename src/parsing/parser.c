@@ -20,20 +20,25 @@ static int	check_elements(t_data *data)
 static char	*parse_config(int fd, t_data *data)
 {
 	char	*line;
+	char	*saved;
 	int	ret;
 
 	line = get_next_line(fd);
 	while (line)
 	{
 		ret = parse_element(line, data);
-		free(line);
 		if (ret == 1)
+		{
+			free(line);
 			return (NULL);
+		}
 		if (ret == 2)
 		{
-			line = get_next_line(fd);
-			return (line);
+			saved = ft_strdup(line);
+			free(line);
+			return (saved);
 		}
+		free(line);
 		line = get_next_line(fd);
 	}
 	return (NULL);
@@ -85,6 +90,8 @@ int	parse_map(char *file, t_data *data)
 	if (read_map_line(fd, data, first_map_line))
 		return(close(fd), printf("Error\nError when reading map\n"), 1);
 	close(fd);
+	if (validate_map(data))
+		return (1);
 	//validate if has player and if map is closed
 	return (0);
 }

@@ -141,5 +141,6 @@ int	parse_element(char *line, t_data *data);
 int     validate_map(t_data *data);
 
 void    init_player_dir(t_data *data);
+void	free_data(t_data *data);
 
 #endif

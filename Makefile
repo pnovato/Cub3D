@@ -12,6 +12,7 @@ MLX_DIR = minilibx-linux
 
 SRC = $(SRC_DIR)/main.c \
       $(SRC_INIT_DIR)/init_mlx.c \
+      $(SRC_INIT_DIR)/free_data.c \
       $(SRC_INIT_DIR)/init_player.c \
       $(SRC_PARSING_DIR)/parser.c \
       $(SRC_PARSING_DIR)/parse_elements.c\
