@@ -50,6 +50,10 @@ typedef struct s_map
 	char	**map;
 	int	n_lines;
 	int	n_column;
+	char	*path_no; //path to texture NO
+	char	*path_so;
+	char	*path_we;
+	char	*path_ea;
 }	t_map;
 //---------------------------------------------------------
 //Struct for the player (Working with vectors)
@@ -132,5 +136,6 @@ void	rotate_player(t_data *data, double angle);
 char	*get_next_line(int fd);
 void    free_data(t_data *data);
 
+int	parse_element(char *line, t_data *data);
 
 #endif
