@@ -119,8 +119,11 @@ typedef struct s_data
 	t_ray		ray;
 	t_texture	text[4];
 	t_keys		keys;
-	int			floor_color;
-	int			ceiling_color;
+	int		floor_color;
+	int		ceiling_color;
+	int		parse_error;
+	int		has_floor_color;
+	int		has_ceiling_color;
 }	t_data;
 
 // init_mlx.c

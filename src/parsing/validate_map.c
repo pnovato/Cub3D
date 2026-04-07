@@ -18,7 +18,7 @@ static int	check_char(t_data *data)
 		while (data->map.map[i][j])
 		{
 			if (!is_valid_char(data->map.map[i][j]))
-				return (printf("Error\nInvalid map char '%c'\n",
+				return (printf("Error\nInvalid map char \'%c\'\n",
 					data->map.map[i][j]), 1);
 			j++;
 		}
@@ -64,7 +64,7 @@ static int	check_cell(t_data *data, int i, int j)
 {
 	int	max_j;
 	
-	if (data->map.map[i][j] != '\0')
+	if (data->map.map[i][j] != '0')
 		return (0);
 	if (i == 0)
 		return (printf("Error\nMap is not closed\n"), 1);
