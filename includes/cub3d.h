@@ -146,4 +146,8 @@ int     validate_map(t_data *data);
 void    init_player_dir(t_data *data);
 void	free_data(t_data *data);
 
+int	is_xpm_extension(char *path);
+int	has_spaces(char *str);
+
+
 #endif

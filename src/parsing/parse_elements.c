@@ -82,7 +82,11 @@ static int	parse_texture(char **dest, char *line)
 		return (printf("Error\nDuplicated texture.\n"), 1);
 	trimmed = ft_strtrim_nl(line);
 	if (!trimmed || trimmed[0] == '\0')
-		return (printf("Error\nInvalid path of texture\n"), 1);
+		return (free(trimmed), printf("Error\nInvalid path of texture\n"), 1);
+	if (has_spaces(trimmed))
+		return (free(trimmed), printf("Error\nToo many args in texture\n"), 1);
+	if (!is_xpm_extension(trimmed))
+		return (free(trimmed), printf("Error\nTexture must be .xpm extension\n"), 1);	
 	*dest = trimmed;
 	return (0);
 }
