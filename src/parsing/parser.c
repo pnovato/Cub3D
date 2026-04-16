@@ -26,6 +26,10 @@ static int	check_elements(t_data *data)
 		return (printf("Error\nMissing F color\n"), 1);
 	if (!data->ceiling_color && data->ceiling_color != 0)
 		return (printf("Error\nMissing C collor\n"), 1);
+	if (!data->has_floor_color)
+		return (printf("Error\nFloor color is missing\n"), 1);
+	if (!data->has_ceiling_color)
+		return (printf("Error\nCeiling color is missing\n"), 1);
 	return (0);
 }
 
@@ -42,6 +46,7 @@ static char	*parse_config(int fd, t_data *data)
 		if (ret == 1)
 		{
 			free(line);
+			data->parse_error = 1;
 			return (NULL);
 		}
 		if (ret == 2)
@@ -76,7 +81,7 @@ static int	read_map_line(int fd, t_data *data, char *first_line)
 			return (printf("Error\nBad memory allocation in function\n"), 1);
 		}
 		data->map.map = temp;
-		data->map.map[i] = ft_strtrim(line, "\n");
+		data->map.map[i] = ft_strtrim(line, "\n\r");
 		free(line);
 		i++;
 		line = get_next_line(fd);
@@ -92,11 +97,14 @@ int	parse_map(char *file, t_data *data)
 	char	*first_map_line;
 
 	if (ft_strncmp(file + ft_strlen(file) - 4, ".cub", 4))
-		return (printf("Error\nFile must be a \".cub\" extension"), 1);
+		return (printf("Error\nFile must be a \".cub\" extension\n"), 1);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (printf("Error\nFile not opening\n"), 1);
+	data->parse_error = 0;
 	first_map_line = parse_config(fd, data);
+	if (data->parse_error)
+		return (close(fd), 1);
 	if (check_elements(data))
 		return (close(fd), 1);
 	if (read_map_line(fd, data, first_map_line))

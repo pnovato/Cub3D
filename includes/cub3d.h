@@ -136,8 +136,11 @@ typedef struct s_data
 	t_texture	floor;
 	t_texture	ceiling;
 	t_keys		keys;
-	int			floor_color;
-	int			ceiling_color;
+	int		floor_color;
+	int		ceiling_color;
+	int		parse_error;
+	int		has_floor_color;
+	int		has_ceiling_color;
 }	t_data;
 
 // init_mlx.c
@@ -158,5 +161,8 @@ int		validate_map(t_data *data);
 
 void	init_player_dir(t_data *data);
 void	free_data(t_data *data);
+
+int	is_xpm_extension(char *path);
+int	has_spaces(char *str);
 
 #endif
