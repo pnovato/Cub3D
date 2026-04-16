@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/09 21:18:15 by kali              #+#    #+#             */
+/*   Updated: 2026/04/09 21:18:28 by kali             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
+
 # define CUB3D_H
 # include <stdlib.h>
 # include <unistd.h>
@@ -20,7 +33,7 @@ typedef enum e_dir
 	SO,
 	WE,
 	EA
-}   t_dir;
+}	t_dir;
 //---------------------------------------------------------
 //Struct base for vector calculations
 //---------------------------------------------------------
@@ -34,22 +47,22 @@ typedef struct s_vector
 //---------------------------------------------------------
 typedef struct s_cub
 {
-    void    *mlx_ptr;
-    void    *win_ptr;
-    void    *img_ptr;
-    char    *addr;         
-    int     bits_p_pixel;  
-    int     size_line;     
-    int     endian;        
-}   t_cub;
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img_ptr;
+	char	*addr;
+	int		bits_p_pixel;
+	int		size_line;
+	int		endian;
+}	t_cub;
 //---------------------------------------------------------
 //Struct for the map (pointer to matrix, number of lines n columns)
 //---------------------------------------------------------
 typedef struct s_map
 {
 	char	**map;
-	int	n_lines;
-	int	n_column;
+	int		n_lines;
+	int		n_column;
 	char	*path_no; //path to texture NO
 	char	*path_so;
 	char	*path_we;
@@ -63,24 +76,26 @@ typedef struct s_player
 	struct s_vector	pos;
 	struct s_vector	dir;
 	struct s_vector	plane;
-	char		spawn_dir;
+	char			spawn_dir;
 }	t_player;
 //---------------------------------------------------------
 //Struct for the data required for every ray loop
 //---------------------------------------------------------
 typedef struct s_ray
 {
-	t_vector dir_ray;
-	int	map_x;
-	int	map_y;
-	int	side_hit;
-	int	step_x;
-	int	step_y;
-	double	delt_x;
-	double	delt_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	double	perp_wall_dist;
+	t_vector	dir_ray;
+	int			map_x;
+	int			map_y;
+	int			side_hit;
+	int			step_x;
+	int			step_y;
+	double		delt_x;
+	double		delt_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	double		perp_wall_dist;
+	double		wallx;
+	int			texx;
 }	t_ray;
 //---------------------------------------------------------
 //Struct for the textures (All related to the function 
@@ -91,11 +106,11 @@ typedef struct s_texture
 {
 	char		*addr_img;
 	void		*img_ptr;
-	int		bits_p_pixel;
-	int		size_line;
-	int		endian;
-	int		t_height;
-	int		t_width;
+	int			bits_p_pixel;
+	int			size_line;
+	int			endian;
+	int			t_height;
+	int			t_width;
 }	t_texture;
 
 typedef struct s_keys
@@ -118,29 +133,36 @@ typedef struct s_data
 	t_player	player;
 	t_ray		ray;
 	t_texture	text[4];
+	t_texture	floor;
+	t_texture	ceiling;
 	t_keys		keys;
-	int			floor_color;
-	int			ceiling_color;
+	int		floor_color;
+	int		ceiling_color;
+	int		parse_error;
+	int		has_floor_color;
+	int		has_ceiling_color;
 }	t_data;
 
 // init_mlx.c
 void	init_window(t_data *data);
 void	close_window(t_data *data);
-int	handle_close(t_data *data);
-int	handle_key(int keycode, t_data *vars);
-int     parse_map(char *file, t_data *data);
-int     render_frame(t_data *data);
-//int     key_press(int keycode, t_cub *vars);
+int		handle_close(t_data *data);
+int		handle_key(int keycode, t_data *vars);
+int		parse_map(char *file, t_data *data);
+int		render_frame(t_data *data);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	draw_vertical_line(t_data *data, int x, int draw_start, int draw_end);
+void	draw_vertical_line(t_data *data, int x, int draw_start, int draw_end, int line_height, int tex_idx);
 void	rotate_player(t_data *data, double angle);
 char	*get_next_line(int fd);
-void    free_data(t_data *data);
-
-int	parse_element(char *line, t_data *data);
-int     validate_map(t_data *data);
-
-void    init_player_dir(t_data *data);
 void	free_data(t_data *data);
+
+int		parse_element(char *line, t_data *data);
+int		validate_map(t_data *data);
+
+void	init_player_dir(t_data *data);
+void	free_data(t_data *data);
+
+int	is_xpm_extension(char *path);
+int	has_spaces(char *str);
 
 #endif

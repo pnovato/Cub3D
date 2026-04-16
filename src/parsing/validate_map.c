@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_map.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/09 21:45:50 by kali              #+#    #+#             */
+/*   Updated: 2026/04/09 21:47:25 by kali             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/cub3d.h"
 
 static int	is_valid_char(int c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'W'
-			|| c == 'E' || c == ' ');
+		|| c == 'E' || c == ' ');
 }
 
 static int	check_char(t_data *data)
@@ -18,8 +30,8 @@ static int	check_char(t_data *data)
 		while (data->map.map[i][j])
 		{
 			if (!is_valid_char(data->map.map[i][j]))
-				return (printf("Error\nInvalid map char '%c'\n",
-					data->map.map[i][j]), 1);
+				return (printf("Error\nInvalid map char \'%c\'\n",
+						data->map.map[i][j]), 1);
 			j++;
 		}
 		i++;
@@ -32,7 +44,7 @@ static int	find_player(t_data *data)
 	int	i;
 	int	j;
 	int	count;
-	
+
 	count = 0;
 	i = 0;
 	while (data->map.map[i])
@@ -44,8 +56,8 @@ static int	find_player(t_data *data)
 			|| data->map.map[i][j] == 'W' || data->map.map[i][j] == 'E')
 			{
 				count++;
-				data->player.pos.x = j + 0.5; //this places the player in the middle of the cell
-				data->player.pos.y = i + 0.5; //same as above
+				data->player.pos.x = j + 0.5;
+				data->player.pos.y = i + 0.5;
 				data->player.spawn_dir = data->map.map[i][j];
 				data->map.map[i][j] = '0';
 			}
@@ -63,8 +75,8 @@ static int	find_player(t_data *data)
 static int	check_cell(t_data *data, int i, int j)
 {
 	int	max_j;
-	
-	if (data->map.map[i][j] != '\0')
+
+	if (data->map.map[i][j] != '0')
 		return (0);
 	if (i == 0)
 		return (printf("Error\nMap is not closed\n"), 1);
@@ -86,11 +98,11 @@ static int	check_cell(t_data *data, int i, int j)
 	return (0);
 }
 
-static int 	check_closed(t_data *data)
+static int	check_closed(t_data *data)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	while (data->map.map[i])
 	{
@@ -101,7 +113,7 @@ static int 	check_closed(t_data *data)
 				return (1);
 			j++;
 		}
-		i++;	
+		i++;
 	}
 	return (0);
 }
@@ -116,4 +128,3 @@ int	validate_map(t_data *data)
 		return (1);
 	return (0);
 }
-
