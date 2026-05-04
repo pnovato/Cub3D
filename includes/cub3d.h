@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 21:18:15 by kali              #+#    #+#             */
-/*   Updated: 2026/04/09 21:18:28 by kali             ###   ########.fr       */
+/*   Updated: 2026/05/04 06:53:22 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,12 @@ typedef struct s_ray
 	double		perp_wall_dist;
 	double		wallx;
 	int			texx;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			tex_idx;
+	double		step;
+	double		texpos;
 }	t_ray;
 //---------------------------------------------------------
 //Struct for the textures (All related to the function 
@@ -136,11 +142,11 @@ typedef struct s_data
 	t_texture	floor;
 	t_texture	ceiling;
 	t_keys		keys;
-	int		floor_color;
-	int		ceiling_color;
-	int		parse_error;
-	int		has_floor_color;
-	int		has_ceiling_color;
+	int			floor_color;
+	int			ceiling_color;
+	int			parse_error;
+	int			has_floor_color;
+	int			has_ceiling_color;
 }	t_data;
 
 // init_mlx.c
@@ -151,10 +157,11 @@ int		handle_key(int keycode, t_data *vars);
 int		parse_map(char *file, t_data *data);
 int		render_frame(t_data *data);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	draw_vertical_line(t_data *data, int x, int draw_start, int draw_end, int line_height, int tex_idx);
 void	rotate_player(t_data *data, double angle);
 char	*get_next_line(int fd);
 void	free_data(t_data *data);
+void	draw_vertical_line(t_data *data, int x);
+int		get_texture_pixel(t_texture *tex, int x, int y);
 
 int		parse_element(char *line, t_data *data);
 int		validate_map(t_data *data);
@@ -162,7 +169,20 @@ int		validate_map(t_data *data);
 void	init_player_dir(t_data *data);
 void	free_data(t_data *data);
 
-int	is_xpm_extension(char *path);
-int	has_spaces(char *str);
+int		is_xpm_extension(char *path);
+int		has_spaces(char *str);
 
+void	init_ray(t_data *data, int x);
+void	calc_step(t_data *data);
+void	perform_dda(t_data *data);
+void	move_player(t_data *data);
+
+int		check_closed(t_data *data);
+void	free_split(char **split);
+int		parse_color(char *line, t_data *data, char type);
+
+int		handle_close(t_data *data);
+int		key_press(int keycode, t_data *data);
+int		key_release(int keycode, t_data *data);
+void	rotate_player(t_data *data, double angle);
 #endif

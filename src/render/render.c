@@ -5,148 +5,72 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 21:58:54 by kali              #+#    #+#             */
-/*   Updated: 2026/04/09 22:05:36 by kali             ###   ########.fr       */
+/*   Created: 2026/05/04 06:32:32 by kali              #+#    #+#             */
+/*   Updated: 2026/05/04 07:11:00 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-/* ** 1. Inicializa as variáveis do raio para a coluna atual (x)
-*/
-static void	init_ray(t_data *data, int x)
+static void	calc_line_height(t_data *data)
 {
-	double	camera_x;
+	t_ray	*r;
 
-	camera_x = 2 * x / (double)WIDTH - 1;
-	data->ray.dir_ray.x = data->player.dir.x + data->player.plane.x * camera_x;
-	data->ray.dir_ray.y = data->player.dir.y + data->player.plane.y * camera_x;
-	data->ray.map_x = (int)data->player.pos.x;
-	data->ray.map_y = (int)data->player.pos.y;
-	if (data->ray.dir_ray.x == 0)
-		data->ray.delt_x = 1e30;
+	r = &data->ray;
+	if (r->side_hit == 0)
+		r->perp_wall_dist = r->side_dist_x - r->delt_x;
 	else
-		data->ray.delt_x = fabs(1 / data->ray.dir_ray.x);
-	if (data->ray.dir_ray.y == 0)
-		data->ray.delt_y = 1e30;
-	else
-		data->ray.delt_y = fabs(1 / data->ray.dir_ray.y);
+		r->perp_wall_dist = r->side_dist_y - r->delt_y;
+	if (r->perp_wall_dist <= 0)
+		r->perp_wall_dist = 0.1;
+	r->line_height = (int)(HEIGHT / r->perp_wall_dist);
+	r->draw_start = -r->line_height / 2 + HEIGHT / 2;
+	if (r->draw_start < 0)
+		r->draw_start = 0;
+	r->draw_end = r->line_height / 2 + HEIGHT / 2;
+	if (r->draw_end >= HEIGHT)
+		r->draw_end = HEIGHT - 1;
 }
 
-static void	calc_step(t_data *data)
+static void	calc_texture(t_data *data)
 {
-	if (data->ray.dir_ray.x < 0)
-	{
-		data->ray.step_x = -1;
-		data->ray.side_dist_x = (data->player.pos.x - data->ray.map_x) * data->ray.delt_x;
-	}
+	t_ray		*r;
+	t_player	*p;
+	int			tw;
+
+	r = &data->ray;
+	p = &data->player;
+	if (r->side_hit == 0)
+		r->wallx = p->pos.y + r->perp_wall_dist * r->dir_ray.y;
 	else
-	{
-		data->ray.step_x = 1;
-		data->ray.side_dist_x = (data->ray.map_x + 1.0 - data->player.pos.x) * data->ray.delt_x;
-	}
-	if (data->ray.dir_ray.y < 0)
-	{
-		data->ray.step_y = -1;
-		data->ray.side_dist_y = (data->player.pos.y - data->ray.map_y) * data->ray.delt_y;
-	}
+		r->wallx = p->pos.x + r->perp_wall_dist * r->dir_ray.x;
+	r->wallx -= floor(r->wallx);
+	if (r->side_hit == 0 && r->dir_ray.x > 0)
+		r->tex_idx = WE;
+	else if (r->side_hit == 0)
+		r->tex_idx = EA;
+	else if (r->side_hit == 1 && r->dir_ray.y > 0)
+		r->tex_idx = NO;
 	else
-	{
-		data->ray.step_y = 1;
-		data->ray.side_dist_y = (data->ray.map_y + 1.0 - data->player.pos.y) * data->ray.delt_y;
-	}
-}
-
-static void	perform_dda(t_data *data)
-{
-	int	hit;
-
-	hit = 0;
-	while (hit == 0)
-	{
-		if (data->ray.side_dist_x < data->ray.side_dist_y)
-		{
-			data->ray.side_dist_x += data->ray.delt_x;
-			data->ray.map_x += data->ray.step_x;
-			data->ray.side_hit = 0; // Parede Leste/Oeste
-		}
-		else
-		{
-			data->ray.side_dist_y += data->ray.delt_y;
-			data->ray.map_y += data->ray.step_y;
-			data->ray.side_hit = 1; // Parede Norte/Sul
-		}
-		if (data->map.map[data->ray.map_y][data->ray.map_x] == '1')
-			hit = 1;
-	}
-}
-
-/* ** 4. Calcula a distância real e os limites de desenho na tela
-*/
-static void	calc_line_height(t_data *data, int *line_height, int *draw_start, int *draw_end)
-{
-	if (data->ray.side_hit == 0)
-		data->ray.perp_wall_dist = (data->ray.side_dist_x - data->ray.delt_x);
-	else
-		data->ray.perp_wall_dist = (data->ray.side_dist_y - data->ray.delt_y);
-	if (data->ray.perp_wall_dist <= 0)
-		data->ray.perp_wall_dist = 0.1;
-	*line_height = (int)(HEIGHT / data->ray.perp_wall_dist);
-	*draw_start = -(*line_height) / 2 + HEIGHT / 2;
-	if (*draw_start < 0)
-		*draw_start = 0;
-	*draw_end = (*line_height) / 2 + HEIGHT / 2;
-	if (*draw_end >= HEIGHT)
-		*draw_end = HEIGHT - 1;
-}
-
-void	move_player(t_data *data)
-{
-	double s = 0.05;
-	double r = 0.04;
-
-	if (data->keys.w)
-	{
-		if (data->map.map[(int)data->player.pos.y][(int)(data->player.pos.x + data->player.dir.x * s)] != '1')
-			data->player.pos.x += data->player.dir.x * s;
-		if (data->map.map[(int)(data->player.pos.y + data->player.dir.y * s)][(int)data->player.pos.x] != '1')
-			data->player.pos.y += data->player.dir.y * s;
-	}
-	if (data->keys.s)
-	{
-		if (data->map.map[(int)data->player.pos.y][(int)(data->player.pos.x - data->player.dir.x * s)] != '1')
-			data->player.pos.x -= data->player.dir.x * s;
-		if (data->map.map[(int)(data->player.pos.y - data->player.dir.y * s)][(int)data->player.pos.x] != '1')
-			data->player.pos.y -= data->player.dir.y * s;
-	}
-	if (data->keys.a)
-	{
-		if (data->map.map[(int)data->player.pos.y][(int)(data->player.pos.x - data->player.plane.x * s)] != '1')
-			data->player.pos.x -= data->player.plane.x * s;
-		if (data->map.map[(int)(data->player.pos.y - data->player.plane.y * s)][(int)data->player.pos.x] != '1')
-			data->player.pos.y -= data->player.plane.y * s;
-	}
-	if (data->keys.d)
-	{
-		if (data->map.map[(int)data->player.pos.y][(int)(data->player.pos.x + data->player.plane.x * s)] != '1')
-			data->player.pos.x += data->player.plane.x * s;
-		if (data->map.map[(int)(data->player.pos.y + data->player.plane.y * s)][(int)data->player.pos.x] != '1')
-			data->player.pos.y += data->player.plane.y * s;
-	}
-	if (data->keys.left)
-		rotate_player(data, -r);
-	if (data->keys.right)
-		rotate_player(data, r);
+		r->tex_idx = SO;
+	tw = data->text[r->tex_idx].t_width;
+	r->texx = (int)(r->wallx * (double)tw);
+	if (r->side_hit == 0 && r->dir_ray.x > 0)
+		r->texx = tw - r->texx - 1;
+	if (r->side_hit == 1 && r->dir_ray.y < 0)
+		r->texx = tw - r->texx - 1;
 }
 
 int	render_frame(t_data *data)
 {
-	int	x;
-	int	line_height;
-	int	draw_start;
-	int	draw_end;
-	int	tex_idx;
+	int		x;
+	void	*m;
+	void	*w;
+	void	*img;
 
+	m = data->init.mlx_ptr;
+	w = data->init.win_ptr;
+	img = data->init.img_ptr;
 	move_player(data);
 	x = 0;
 	while (x < WIDTH)
@@ -154,24 +78,11 @@ int	render_frame(t_data *data)
 		init_ray(data, x);
 		calc_step(data);
 		perform_dda(data);
-		calc_line_height(data, &line_height, &draw_start, &draw_end);
-		if (data->ray.side_hit == 0)
-			data->ray.wallx = data->player.pos.y + data->ray.perp_wall_dist * data->ray.dir_ray.y;
-		else
-			data->ray.wallx = data->player.pos.x + data->ray.perp_wall_dist * data->ray.dir_ray.x;
-		data->ray.wallx -= floor(data->ray.wallx);
-		if (data->ray.side_hit == 0)
-			tex_idx = (data->ray.dir_ray.x > 0) ? WE : EA;
-		else
-			tex_idx = (data->ray.dir_ray.y > 0) ? NO : SO;
-		data->ray.texx = (int)(data->ray.wallx * (double)data->text[tex_idx].t_width);
-		if (data->ray.side_hit == 0 && data->ray.dir_ray.x > 0)
-			data->ray.texx = data->text[tex_idx].t_width - data->ray.texx - 1;
-		if (data->ray.side_hit == 1 && data->ray.dir_ray.y < 0)
-			data->ray.texx = data->text[tex_idx].t_width - data->ray.texx - 1;
-		draw_vertical_line(data, x, draw_start, draw_end, line_height, tex_idx);
+		calc_line_height(data);
+		calc_texture(data);
+		draw_vertical_line(data, x);
 		x++;
 	}
-	mlx_put_image_to_window(data->init.mlx_ptr, data->init.win_ptr, data->init.img_ptr, 0, 0);
+	mlx_put_image_to_window(m, w, img, 0, 0);
 	return (0);
 }

@@ -1,6 +1,6 @@
 NAME = cub3d
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -O3
 SRC_DIR = src
 SRC_INIT_DIR = src/init
 SRC_PARSING_DIR = src/parsing
@@ -14,12 +14,19 @@ SRC = $(SRC_DIR)/main.c \
       $(SRC_INIT_DIR)/init_mlx.c \
       $(SRC_INIT_DIR)/free_data.c \
       $(SRC_INIT_DIR)/init_player.c \
+	  $(SRC_INIT_DIR)/events.c \
       $(SRC_PARSING_DIR)/parser.c \
       $(SRC_PARSING_DIR)/parse_elements.c\
       $(SRC_PARSING_DIR)/validate_map.c \
       $(SRC_PARSING_DIR)/parse_texture.c \
+	  $(SRC_PARSING_DIR)/validate_closed.c \
+	  $(SRC_PARSING_DIR)/parse_color.c \
       $(SRC_RENDER_DIR)/render.c \
-      $(SRC_RENDER_DIR)/draw.c
+      $(SRC_RENDER_DIR)/draw.c \
+	  $(SRC_RENDER_DIR)/draw_utils.c \
+	  $(SRC_RENDER_DIR)/raycast.c \
+	  $(SRC_RENDER_DIR)/movement.c
+
 
 OBJ = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
 

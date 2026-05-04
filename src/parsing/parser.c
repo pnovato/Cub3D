@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 21:42:10 by kali              #+#    #+#             */
-/*   Updated: 2026/04/09 21:45:34 by kali             ###   ########.fr       */
+/*   Updated: 2026/05/04 06:51:11 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ static int	read_map_line(int fd, t_data *data, char *first_line)
 	{
 		temp = realloc(data->map.map, sizeof(char *) * (i + 2));
 		if (!temp)
-		{
-			free(line);
-			return (printf("Error\nBad memory allocation in function\n"), 1);
-		}
+			return (free(line), printf("Error\nMemory alloc fail\n"), 1);
 		data->map.map = temp;
 		data->map.map[i] = ft_strtrim(line, "\n\r");
 		free(line);
